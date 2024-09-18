@@ -27,7 +27,8 @@ UPDATE_PACKAGE "kucat" "sirpdboy/luci-theme-kucat" "js"
 UPDATE_PACKAGE "homeproxy" "VIKINGYFY/homeproxy" "main"
 
 UPDATE_PACKAGE "luci-app-advancedplus" "VIKINGYFY/luci-app-advancedplus" "main"
-
+UPDATE_PACKAGE "luci-app-accesscontrol-plus" "kiddin9/luci-app-accesscontrol-plus" "patch-2"
+UPDATE_PACKAGE "luci-app-parentcontrol" "sirpdboy/luci-app-parentcontrol" "main"
 
 if [[ $WRT_REPO == *"openwrt-6.x"* ]]; then
 	UPDATE_PACKAGE "qmi-wwan" "immortalwrt/wwan-packages" "master" "pkg"
