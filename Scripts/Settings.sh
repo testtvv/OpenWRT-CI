@@ -33,6 +33,8 @@ echo "CONFIG_PACKAGE_snmpd=y" >> ./.config
 echo "CONFIG_PACKAGE_iptables=y" >> ./.config
 echo "CONFIG_PACKAGE_kmod-ipt-nat=y" >> ./.config
 echo "CONFIG_PACKAGE_kmod-nf-nat=y" >> ./.config
+echo "CONFIG_PACKAGE_luci-app-accesscontrol-plus=y" >> ./.config
+echo "CONFIG_PACKAGE_luci-app-parentcontrol=y" >> ./.config
 
 
 #手动调整的插件
