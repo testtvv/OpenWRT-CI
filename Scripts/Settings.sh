@@ -35,6 +35,9 @@ echo "CONFIG_PACKAGE_kmod-ipt-nat=y" >> ./.config
 echo "CONFIG_PACKAGE_kmod-nf-nat=y" >> ./.config
 echo "CONFIG_PACKAGE_luci-app-accesscontrol-plus=y" >> ./.config
 echo "CONFIG_PACKAGE_luci-app-parentcontrol=y" >> ./.config
+# 禁用 firewall 并启用 firewall4
+echo "# CONFIG_PACKAGE_firewall is not set" >> ./.config
+echo "CONFIG_PACKAGE_firewall4=y" >> ./.config
 
 
 #手动调整的插件
