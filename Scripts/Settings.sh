@@ -27,17 +27,17 @@ echo "CONFIG_PACKAGE_kmod-usb-dwc3-qcom=n" >> ./.config
 echo "CONFIG_PACKAGE_kmod-usb-xhci-hcd=n" >> ./.config
 echo "CONFIG_PACKAGE_kmod-usb3=n" >> ./.config
 #配置文件修改
-echo "CONFIG_PACKAGE_iptables-mod-filter=y" >> ./.config
-echo "CONFIG_PACKAGE_kmod-ipt-filter=y" >> ./.config
-echo "CONFIG_PACKAGE_snmpd=y" >> ./.config
-echo "CONFIG_PACKAGE_iptables=y" >> ./.config
-echo "CONFIG_PACKAGE_kmod-ipt-nat=y" >> ./.config
-echo "CONFIG_PACKAGE_kmod-nf-nat=y" >> ./.config
-echo "CONFIG_PACKAGE_luci-app-accesscontrol-plus=y" >> ./.config
-echo "CONFIG_PACKAGE_luci-app-parentcontrol=y" >> ./.config
+#echo "CONFIG_PACKAGE_iptables-mod-filter=y" >> ./.config
+#echo "CONFIG_PACKAGE_kmod-ipt-filter=y" >> ./.config
+#echo "CONFIG_PACKAGE_snmpd=y" >> ./.config
+#echo "CONFIG_PACKAGE_iptables=y" >> ./.config
+#echo "CONFIG_PACKAGE_kmod-ipt-nat=y" >> ./.config
+#echo "CONFIG_PACKAGE_kmod-nf-nat=y" >> ./.config
+#echo "CONFIG_PACKAGE_luci-app-accesscontrol-plus=y" >> ./.config
+#echo "CONFIG_PACKAGE_luci-app-parentcontrol=y" >> ./.config
 # 禁用 firewall 并启用 firewall4
-echo "# CONFIG_PACKAGE_firewall is not set" >> ./.config
-echo "CONFIG_PACKAGE_firewall4=y" >> ./.config
+#echo "# CONFIG_PACKAGE_firewall is not set" >> ./.config
+#echo "CONFIG_PACKAGE_firewall4=y" >> ./.config
 
 
 #手动调整的插件
