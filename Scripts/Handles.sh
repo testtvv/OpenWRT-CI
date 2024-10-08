@@ -34,6 +34,13 @@ if [ -f "$PW_FILE" ]; then
 	cd $PKG_PATCH && echo "passwall has been fixed!"
 fi
 
+#修复freeswitch依赖缺失
+FW_FILE=$(find ../feeds/telephony/ -maxdepth 3 -type f -wholename "*/freeswitch/Makefile")
+if [ -f "$FW_FILE" ]; then
+	sed -i "s/libpcre/libpcre2/g" $FW_FILE
+
+	cd $PKG_PATCH && echo "freeswitch has been fixed!"
+fi
 SP_FILE=$(find ./ -maxdepth 3 -type f -wholename "*/luci-app-ssr-plus/Makefile")
 if [ -f "$SP_FILE" ]; then
 	sed -i '/default PACKAGE_$(PKG_NAME)_INCLUDE_Shadowsocks_Libev/,/libev/d' $SP_FILE
