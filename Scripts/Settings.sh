@@ -51,6 +51,6 @@ if [[ $WRT_TARGET == *"IPQ"* ]]; then
 	echo "CONFIG_FEED_nss_packages=n" >> ./.config
 	echo "CONFIG_FEED_sqm_scripts_nss=n" >> ./.config
 	#更换nss版本
-	echo "CONFIG_NSS_FIRMWARE_VERSION_11_4=n" >> ./.config
-	echo "CONFIG_NSS_FIRMWARE_VERSION_12_5=y" >> ./.config	
+	echo "CONFIG_NSS_FIRMWARE_VERSION_11_4=y" >> ./.config
+	echo "CONFIG_NSS_FIRMWARE_VERSION_12_5=n" >> ./.config	
 fi
