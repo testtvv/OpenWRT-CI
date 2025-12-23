@@ -55,15 +55,6 @@ if [ -f "$NSS_PBUF" ]; then
 	cd $PKG_PATH && echo "qca-nss-pbuf has been fixed!"
 fi
 
-#修复TailScale配置文件冲突
-TS_FILE=$(find ../feeds/packages/ -maxdepth 3 -type f -wholename "*/tailscale/Makefile")
-if [ -f "$TS_FILE" ]; then
-	echo " "
-
-	sed -i '/\/files/d' $TS_FILE
-
-	cd $PKG_PATH && echo "tailscale has been fixed!"
-fi
 
 #修复Rust编译失败
 RUST_FILE=$(find ../feeds/packages/ -maxdepth 3 -type f -wholename "*/rust/Makefile")
@@ -75,16 +66,6 @@ if [ -f "$RUST_FILE" ]; then
 	cd $PKG_PATH && echo "rust has been fixed!"
 fi
 
-#修复DiskMan编译失败
-DM_FILE="./luci-app-diskman/applications/luci-app-diskman/Makefile"
-if [ -f "$DM_FILE" ]; then
-	echo " "
-
-	sed -i 's/fs-ntfs/fs-ntfs3/g' $DM_FILE
-	sed -i '/ntfs-3g-utils /d' $DM_FILE
-
-	cd $PKG_PATH && echo "diskman has been fixed!"
-fi
 
 #修复99_netspeedtest文件残留问题
 if [ -d *"luci-app-netspeedtest"* ]; then
