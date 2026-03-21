@@ -102,7 +102,3 @@ CONFIG_PACKAGE_sfdisk=n
 CONFIG_PACKAGE_sgdisk=n
 CONFIG_PACKAGE_usbmuxd=n
 CONFIG_PACKAGE_usbutils=n
-#旁路由不需要拨号功能
-CONFIG_PACKAGE_kmod-ppp=n
-CONFIG_PACKAGE_kmod-pppoe=n
-
