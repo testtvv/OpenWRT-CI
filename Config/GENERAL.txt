@@ -145,7 +145,7 @@ CONFIG_SINGBOX_WITH_TLS=y
 CONFIG_SINGBOX_WITH_UTLS=y
 CONFIG_SINGBOX_WITH_CLASH_API=y
 
-### 3. IPv6 保留与精简 (保留双栈，剔除隧道) ###
+#  3. IPv6 保留与精简 (保留双栈，剔除隧道) ###
 CONFIG_PACKAGE_odhcp6c=y
 CONFIG_PACKAGE_odhcpd-ipv6only=y
 CONFIG_PACKAGE_luci-proto-ipv6=y
@@ -155,7 +155,7 @@ CONFIG_PACKAGE_kmod-sit=n
 CONFIG_PACKAGE_kmod-nat46=n
 CONFIG_PACKAGE_kmod-ip6-tunnel=n
 CONFIG_PACKAGE_kmod-iptunnel6=n
-4. 彻底剔除无线及无用 NSS 驱动 (无无线环境)
+# 4. 彻底剔除无线及无用 NSS 驱动 (无无线环境)
 
 CONFIG_PACKAGE_kmod-qca-nss-drv-wifi-meshmgr=n
 CONFIG_PACKAGE_kmod-qca-nss-drv-pptp=n
@@ -164,7 +164,7 @@ CONFIG_PACKAGE_kmod-qca-nss-drv-gre=n
 CONFIG_PACKAGE_kmod-qca-nss-drv-map-t=n
 CONFIG_PACKAGE_kmod-qca-nss-drv-tun6rd=n
 CONFIG_PACKAGE_kmod-qca-nss-drv-vxlanmgr=n
-5. 冗余工具与界面精简
+# 5. 冗余工具与界面精简
 CONFIG_PACKAGE_coreutils=n
 CONFIG_PACKAGE_coreutils-base64=n
 CONFIG_PACKAGE_coreutils-nohup=n
