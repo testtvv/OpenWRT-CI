@@ -68,21 +68,18 @@ jobs:
         env:
           DEBIAN_FRONTEND: noninteractive
         run: |
-          # 移除不需要的软件以腾出空间
           sudo -E apt-get -y purge firefox google-chrome* dotnet* microsoft* azure-cli* mysql*
           sudo -E apt-get -y update
           
-          # 只安装编译 OpenWrt 必须的包，彻底剔除 texlive 等垃圾
+          # 删除了 python3-distutils，增加了 python3-setuptools
           sudo -E apt-get -y install --no-install-recommends \
             build-essential clang flex bison g++ gawk gcc-multilib g++-multilib \
-            gettext git libncurses-dev libssl-dev python3-distutils rsync unzip \
+            gettext git libncurses-dev libssl-dev rsync unzip \
             zlib1g-dev swig libpython3-dev libelf-dev lrzsz nano nodejs npm \
-            dos2unix python3-netifaces libfuse-dev
+            dos2unix python3-netifaces libfuse-dev python3-setuptools
             
           sudo -E apt-get -y autoremove --purge
           sudo -E apt-get clean
-          
-          # 设置时区和目录
           sudo -E timedatectl set-timezone "Asia/Shanghai"
           sudo mkdir -p /mnt/build_wrt
           sudo chown $USER:$USER /mnt/build_wrt
@@ -144,7 +141,7 @@ jobs:
             echo "caches missed!"
           fi
 
-          if ${{steps.check-cache.outputs.cache-hit != 'true'}}; then
+          if [ "${{ steps.check-cache.outputs.cache-hit }}" != 'true' ]; then
             CACHE_LIST=$(gh cache list --key "$WRT_CONFIG-$WRT_INFO" | cut -f 1)
             for CACHE_KEY in $CACHE_LIST; do
               gh cache delete $CACHE_KEY
