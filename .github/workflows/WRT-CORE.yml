@@ -167,16 +167,18 @@ jobs:
       - name: Custom Settings
         run: |
           cd ./wrt/
-
           if [[ "${WRT_CONFIG,,}" == *"test"* ]]; then
             cat $GITHUB_WORKSPACE/Config/$WRT_CONFIG.txt >> .config
           else
-            cat $GITHUB_WORKSPACE/Config/$WRT_CONFIG.txt $GITHUB_WORKSPACE/Config/GENERAL.txt >> .config
+            # 采用这种写法最稳，确保两个文件之间有换行
+            cat $GITHUB_WORKSPACE/Config/$WRT_CONFIG.txt >> .config
+            echo "" >> .config
+            cat $GITHUB_WORKSPACE/Config/GENERAL.txt >> .config
           fi
-
+          # 确保脚本有执行权限
+          chmod +x $GITHUB_WORKSPACE/Scripts/Settings.sh
           $GITHUB_WORKSPACE/Scripts/Settings.sh
-
-          make defconfig -j$(nproc) && make clean -j$(nproc)
+          make defconfig -j$(nproc)
 
       - name: Download Packages
         if: env.WRT_TEST != 'true'
