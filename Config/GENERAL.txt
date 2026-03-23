@@ -169,3 +169,8 @@ CONFIG_PACKAGE_coreutils=n
 CONFIG_PACKAGE_coreutils-base64=n
 CONFIG_PACKAGE_coreutils-nohup=n
 CONFIG_PACKAGE_ethtool=n
+# 2. 256MB 内存专项优化 (ZRAM & 系统缓存) ###
+CONFIG_PACKAGE_zram-swap=y
+CONFIG_ZRAM_SETTINGS_ZRAM_SIZE=128
+CONFIG_PACKAGE_kmod-lib-zstd=y
+CONFIG_LOGD_BUFFER_SIZE=16
