@@ -96,7 +96,7 @@ if [[ "${WRT_TARGET^^}" == *"QUALCOMMAX"* ]]; then
 // SPDX-License-Identifier: GPL-2.0-or-later OR MIT
 #include "ipq6018.dtsi"
 &q6_region {
-reg = <0x0 0x4ab00000 0x0 0x00E00000>;
+reg = <0x0 0x4ab00000 0x0 0x00C00000>;
 };
 EOF
         echo "256M Memory: Q6 region set to 8MB and debug regions removed!"
@@ -109,3 +109,21 @@ EOF
     fi
     # --- 无WIFI配置 & 内存极致压榨结束 ---
 fi
+
+# --- HomeProxy 极致瘦身与稳定补丁 ---
+
+# 1. 强制将 HomeProxy 的所有规则集类型从 remote (远程) 改为 local (本地)
+# 这样 Sing-box 启动时就不会去尝试连接 jsdelivr 下载规则，直接秒开
+find ./package/ -type f -name "*.lua" -o -name "*.js" -o -name "*.json" | xargs sed -i 's/"type": "remote"/"type": "local"/g'
+find ./package/ -type f -name "*.lua" -o -name "*.js" -o -name "*.json" | xargs sed -i "s/'type': 'remote'/'type': 'local'/g"
+
+# 2. 将远程 URL 替换为你在固件里预置的本地路径
+# 替换后，Sing-box 会直接读取 /etc/homeproxy/resources/ 下的文件
+find ./package/ -type f -name "*.lua" -o -name "*.js" -o -name "*.json" | xargs sed -i 's|https://fastly.jsdelivr.net/[^"]*cn.srs|/etc/homeproxy/resources/china_list.txt|g'
+find ./package/ -type f -name "*.lua" -o -name "*.js" -o -name "*.json" | xargs sed -i 's|https://fastly.jsdelivr.net/[^"]*!cn.srs|/etc/homeproxy/resources/gfw_list.txt|g'
+find ./package/ -type f -name "*.lua" -o -name "*.js" -o -name "*.json" | xargs sed -i 's|https://fastly.jsdelivr.net/[^"]*cn.txt|/etc/homeproxy/resources/china_ip4.txt|g'
+
+# 3. 针对 256M 设备的额外优化：关闭无用的日志输出，节省内存
+sed -i 's/option log_level .*/option log_level "panic"/g' ./package/feeds/luci/luci-app-homeproxy/root/etc/config/homeproxy
+
+echo "HomeProxy: Remote rules converted to local, survival mode enabled!"
