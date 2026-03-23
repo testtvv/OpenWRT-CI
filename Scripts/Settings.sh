@@ -110,20 +110,21 @@ EOF
     # --- 无WIFI配置 & 内存极致压榨结束 ---
 fi
 
-# --- HomeProxy 极致瘦身与稳定补丁 ---
+# --- HomeProxy 极致优化补丁 (256M 设备专用) ---
 
-# 1. 强制将 HomeProxy 的所有规则集类型从 remote (远程) 改为 local (本地)
-# 这样 Sing-box 启动时就不会去尝试连接 jsdelivr 下载规则，直接秒开
-find ./package/ -type f -name "*.lua" -o -name "*.js" -o -name "*.json" | xargs sed -i 's/"type": "remote"/"type": "local"/g'
-find ./package/ -type f -name "*.lua" -o -name "*.js" -o -name "*.json" | xargs sed -i "s/'type': 'remote'/'type': 'local'/g"
+# 1. 动态查找并修改 HomeProxy 默认配置 (解决 log_level 报错)
+HP_CONF=$(find ./package ./feeds -type f -name "homeproxy" | grep "etc/config/homeproxy" | head -n 1)
+if [ -n "$HP_CONF" ]; then
+    echo "Found HomeProxy config at $HP_CONF, patching..."
+    sed -i 's/option log_level .*/option log_level "panic"/g' "$HP_CONF"
+fi
 
-# 2. 将远程 URL 替换为你在固件里预置的本地路径
-# 替换后，Sing-box 会直接读取 /etc/homeproxy/resources/ 下的文件
-find ./package/ -type f -name "*.lua" -o -name "*.js" -o -name "*.json" | xargs sed -i 's|https://fastly.jsdelivr.net/[^"]*cn.srs|/etc/homeproxy/resources/china_list.txt|g'
-find ./package/ -type f -name "*.lua" -o -name "*.js" -o -name "*.json" | xargs sed -i 's|https://fastly.jsdelivr.net/[^"]*!cn.srs|/etc/homeproxy/resources/gfw_list.txt|g'
-find ./package/ -type f -name "*.lua" -o -name "*.js" -o -name "*.json" | xargs sed -i 's|https://fastly.jsdelivr.net/[^"]*cn.txt|/etc/homeproxy/resources/china_ip4.txt|g'
+# 2. 强行转换远程规则为本地，并替换 URL 为预置路径
+# 使用 find 一次性处理所有相关的 Lua 和 JS 文件
+find ./package ./feeds -type f \( -name "*.lua" -o -name "*.js" -o -name "*.json" \) | xargs -r sed -i \
+    -e 's/"type": "remote"/"type": "local"/g' \
+    -e "s/'type': 'remote'/'type': 'local'/g" \
+    -e 's|https://fastly.jsdelivr.net/[^"]*cn.srs|/etc/homeproxy/resources/china_list.txt|g' \
+    -e 's|https://fastly.jsdelivr.net/[^"]*!cn.srs|/etc/homeproxy/resources/gfw_list.txt|g'
 
-# 3. 针对 256M 设备的额外优化：关闭无用的日志输出，节省内存
-sed -i 's/option log_level .*/option log_level "panic"/g' ./package/feeds/luci/luci-app-homeproxy/root/etc/config/homeproxy
-
-echo "HomeProxy: Remote rules converted to local, survival mode enabled!"
+echo "HomeProxy: Survival mode (Local Rules + Panic Log) enabled!"
