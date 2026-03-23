@@ -68,16 +68,25 @@ jobs:
         env:
           DEBIAN_FRONTEND: noninteractive
         run: |
-          sudo -E apt -yqq purge firefox
-          sudo -E apt -yqq update
-          sudo -E apt -yqq full-upgrade
-          sudo -E apt -yqq autoremove --purge
-          sudo -E apt -yqq autoclean
-          sudo -E apt -yqq clean
-          sudo -E apt -yqq install dos2unix python3-netifaces libfuse-dev
-          sudo bash -c 'bash <(curl -sL https://build-scripts.immortalwrt.org/init_build_environment.sh)'
-          sudo -E systemctl daemon-reload
+          # 移除不需要的软件以腾出空间
+          sudo -E apt-get -y purge firefox google-chrome* dotnet* microsoft* azure-cli* mysql*
+          sudo -E apt-get -y update
+          
+          # 只安装编译 OpenWrt 必须的包，彻底剔除 texlive 等垃圾
+          sudo -E apt-get -y install --no-install-recommends \
+            build-essential clang flex bison g++ gawk gcc-multilib g++-multilib \
+            gettext git libncurses-dev libssl-dev python3-distutils rsync unzip \
+            zlib1g-dev swig libpython3-dev libelf-dev lrzsz nano nodejs npm \
+            dos2unix python3-netifaces libfuse-dev
+            
+          sudo -E apt-get -y autoremove --purge
+          sudo -E apt-get clean
+          
+          # 设置时区和目录
           sudo -E timedatectl set-timezone "Asia/Shanghai"
+          sudo mkdir -p /mnt/build_wrt
+          sudo chown $USER:$USER /mnt/build_wrt
+          sudo ln -s /mnt/build_wrt $GITHUB_WORKSPACE/wrt
 
           sudo mkdir -p /mnt/build_wrt
           sudo chown $USER:$USER /mnt/build_wrt
