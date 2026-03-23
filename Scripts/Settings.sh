@@ -96,7 +96,7 @@ if [[ "${WRT_TARGET^^}" == *"QUALCOMMAX"* ]]; then
 // SPDX-License-Identifier: GPL-2.0-or-later OR MIT
 #include "ipq6018.dtsi"
 &q6_region {
-reg = <0x0 0x4ab00000 0x0 0x00C00000>;
+reg = <0x0 0x4ab00000 0x0 0x00E00000>;
 };
 EOF
         echo "256M Memory: Q6 region set to 8MB and debug regions removed!"
