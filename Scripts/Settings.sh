@@ -91,12 +91,12 @@ if [[ "${WRT_TARGET^^}" == *"QUALCOMMAX"* ]]; then
         # 如果目录不存在则创建，确保重写成功
         mkdir -p $(dirname "$NOWIFI_FILE")
         
-        # 使用 8MB (0x00800000) 方案，并彻底清空调试预留区 (3MB)
+        # 使用 12MB (0x00800000) 方案，并彻底清空调试预留区 (3MB)
         cat > "$NOWIFI_FILE" <<EOF
 // SPDX-License-Identifier: GPL-2.0-or-later OR MIT
 #include "ipq6018.dtsi"
 &q6_region {
-reg = <0x0 0x4ab00000 0x0 0x00800000>;
+reg = <0x0 0x4ab00000 0x0 0x00C00000>;
 };
 EOF
         echo "256M Memory: Q6 region set to 8MB and debug regions removed!"
