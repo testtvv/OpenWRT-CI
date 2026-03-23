@@ -1,5 +1,24 @@
 #!/bin/bash
 
+# 创建 uci-defaults 目录（确保路径存在）
+mkdir -p ./package/base-files/files/etc/uci-defaults/
+
+# 极致压榨 256M 内存：强制 ZRAM 使用 ZSTD 算法并调整大小
+cat > ./package/base-files/files/etc/uci-defaults/99-zram-optimize <<EOF
+#!/bin/sh
+# 1. 强制修改启动脚本中的算法
+sed -i 's/lzo-rle/zstd/g' /etc/init.d/zram
+
+# 2. 如果存在 zramserver 配置文件，则通过 uci 设置参数（比 sed 更安全）
+if [ -f "/etc/config/zramserver" ]; then
+    uci set zramserver.@zramserver[0].comp_algorithm='zstd'
+    uci set zramserver.@zramserver[0].size='128'
+    uci commit zramserver
+fi
+exit 0
+EOF
+
+# 剩下的代码（从移除 attendedsysupgrade 开始）...
 #移除luci-app-attendedsysupgrade
 sed -i "/attendedsysupgrade/d" $(find ./feeds/luci/collections/ -type f -name "Makefile")
 #修改默认主题
