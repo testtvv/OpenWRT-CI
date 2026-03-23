@@ -70,24 +70,18 @@ jobs:
         run: |
           sudo -E apt-get -y purge firefox google-chrome* dotnet* microsoft* azure-cli* mysql*
           sudo -E apt-get -y update
-          
-          # 删除了 python3-distutils，增加了 python3-setuptools
+          # 安装编译必备包 (适配 Ubuntu 24.04)
           sudo -E apt-get -y install --no-install-recommends \
             build-essential clang flex bison g++ gawk gcc-multilib g++-multilib \
             gettext git libncurses-dev libssl-dev rsync unzip \
             zlib1g-dev swig libpython3-dev libelf-dev lrzsz nano nodejs npm \
             dos2unix python3-netifaces libfuse-dev python3-setuptools
-            
           sudo -E apt-get -y autoremove --purge
           sudo -E apt-get clean
           sudo -E timedatectl set-timezone "Asia/Shanghai"
+          # 仅创建大磁盘目录，暂不建立链接
           sudo mkdir -p /mnt/build_wrt
           sudo chown $USER:$USER /mnt/build_wrt
-          sudo ln -s /mnt/build_wrt $GITHUB_WORKSPACE/wrt
-
-          sudo mkdir -p /mnt/build_wrt
-          sudo chown $USER:$USER /mnt/build_wrt
-          sudo ln -s /mnt/build_wrt $GITHUB_WORKSPACE/wrt
 
       - name: Initialization Values
         run: |
@@ -100,10 +94,12 @@ jobs:
 
       - name: Clone Code
         run: |
-          git clone --depth=1 --single-branch --branch $WRT_BRANCH $WRT_REPO ./wrt/
-
-          cd ./wrt/ && echo "WRT_HASH=$(git log -1 --pretty=format:'%h')" >> $GITHUB_ENV
-
+          # 直接克隆到大磁盘目录中
+          git clone --depth=1 --single-branch --branch $WRT_BRANCH $WRT_REPO /mnt/build_wrt
+          # 克隆完成后，再创建软链接，这样 git 就不会报错了
+          ln -s /mnt/build_wrt $GITHUB_WORKSPACE/wrt
+          cd ./wrt/
+          echo "WRT_HASH=$(git log -1 --pretty=format:'%h')" >> $GITHUB_ENV
           # GitHub Action 移除国内下载源
           PROJECT_MIRRORS_FILE="./scripts/projectsmirrors.json"
           if [ -f "$PROJECT_MIRRORS_FILE" ]; then
