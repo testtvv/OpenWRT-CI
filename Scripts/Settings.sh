@@ -109,28 +109,3 @@ EOF
     fi
     # --- 无WIFI配置 & 内存极致压榨结束 ---
 fi
-
-
-
-CONFIG="/etc/homeproxy/sing-box.json"
-
-echo "[HP FIX] 开始修复 sing-box rule-set 问题..."
-
-# 1. 备份配置
-cp $CONFIG ${CONFIG}.bak 2>/dev/null
-
-# 2. 删除 rule_set 整段
-sed -i '/"rule_set": \[/,/\]/d' $CONFIG
-
-# 3. 删除所有 rule_set 引用
-sed -i 's/"rule_set":[^,]*,//g' $CONFIG
-sed -i 's/,"rule_set":[^,]*//g' $CONFIG
-
-# 4. 删除下载相关（防止再次联网）
-sed -i '/download/d' $CONFIG
-
-echo "[HP FIX] 已移除所有远程 rule-set"
-
-
-
-echo "[HP FIX] 完成，sing-box 应该可以正常启动"
