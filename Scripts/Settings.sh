@@ -110,13 +110,14 @@ EOF
     # --- 无WIFI配置 & 内存极致压榨结束 ---
 fi
 
-# 最终的防崩溃补丁：强制修正所有 HomeProxy 的配置为本地模式
-# 无论源码怎么变，只要有 URL 就强行替换
-find ./package/ ./feeds/ -type f \( -name "*.lua" -o -name "*.js" -o -name "*.json" \) | xargs -r sed -i \
+# 规则集本地化 (防止联网下载导致崩溃)
+find ./package ./feeds -type f \( -name "*.lua" -o -name "*.js" -o -name "*.json" \) | xargs -r sed -i \
     -e 's/"type": "remote"/"type": "local"/g' \
     -e "s/'type': 'remote'/'type': 'local'/g" \
     -e 's|https://fastly.jsdelivr.net/[^"]*cn.srs|/etc/homeproxy/resources/china_list.txt|g' \
     -e 's|https://fastly.jsdelivr.net/[^"]*!cn.srs|/etc/homeproxy/resources/gfw_list.txt|g' \
     -e 's|https://fastly.jsdelivr.net/[^"]*cn.txt|/etc/homeproxy/resources/china_ip4.txt|g'
-    
-echo "HomeProxy: Build-time Local Rules Patch Applied Successfully!"
+
+# 强制日志级别为 panic
+HP_CONF=$(find ./package ./feeds -type f -name "homeproxy" | grep "etc/config/homeproxy" | head -n 1)
+[ -n "$HP_CONF" ] && sed -i 's/option log_level .*/option log_level "panic"/g' "$HP_CONF"
