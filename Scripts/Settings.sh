@@ -109,15 +109,3 @@ EOF
     fi
     # --- 无WIFI配置 & 内存极致压榨结束 ---
 fi
-
-# 规则集本地化 (防止联网下载导致崩溃)
-find ./package ./feeds -type f \( -name "*.lua" -o -name "*.js" -o -name "*.json" \) | xargs -r sed -i \
-    -e 's/"type": "remote"/"type": "local"/g' \
-    -e "s/'type': 'remote'/'type': 'local'/g" \
-    -e 's|https://fastly.jsdelivr.net/[^"]*cn.srs|/etc/homeproxy/resources/china_list.txt|g' \
-    -e 's|https://fastly.jsdelivr.net/[^"]*!cn.srs|/etc/homeproxy/resources/gfw_list.txt|g' \
-    -e 's|https://fastly.jsdelivr.net/[^"]*cn.txt|/etc/homeproxy/resources/china_ip4.txt|g'
-
-# 强制日志级别为 panic
-HP_CONF=$(find ./package ./feeds -type f -name "homeproxy" | grep "etc/config/homeproxy" | head -n 1)
-[ -n "$HP_CONF" ] && sed -i 's/option log_level .*/option log_level "panic"/g' "$HP_CONF"
