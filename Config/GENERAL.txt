@@ -180,3 +180,5 @@ CONFIG_SING_BOX_BUILD_GVISOR=n
 CONFIG_SING_BOX_BUILD_TAILSCALE=n
 CONFIG_SING_BOX_BUILD_V2RAY_API=n
 
+# CONFIG_PACKAGE_luci-app-package-manager is not set
+# CONFIG_PACKAGE_luci-i18n-package-manager-zh-cn is not set
