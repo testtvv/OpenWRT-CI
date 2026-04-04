@@ -153,6 +153,45 @@ jobs:
           ./scripts/feeds update -a
           ./scripts/feeds install -a
 
+      - name: Remove Plugins Menu (一劳永逸删除Plugins菜单)
+        run: |
+          cd ./wrt/
+          
+          # 1. 删除 Plugins 功能核心文件
+          rm -f ./feeds/luci/modules/luci-mod-system/root/usr/share/ucode/luci/luciplugins.uc
+          
+          # 2. 修改菜单定义文件，删除 plugins 条目
+          MENU_FILE="./feeds/luci/modules/luci-mod-system/root/usr/share/luci/menu.d/luci-mod-system.json"
+          
+          if [ -f "$MENU_FILE" ]; then
+            # 创建备份
+            cp "$MENU_FILE" "${MENU_FILE}.bak"
+            
+            # 使用 Python 精确删除 plugins 条目（避免 sed 的问题）
+            python3 << 'PYTHON_SCRIPT'
+          import json
+          
+          menu_file = "./feeds/luci/modules/luci-mod-system/root/usr/share/luci/menu.d/luci-mod-system.json"
+          
+          with open(menu_file, 'r', encoding='utf-8') as f:
+              data = json.load(f)
+          
+          # 删除 plugins 条目
+          if 'admin/system/plugins' in data:
+              del data['admin/system/plugins']
+              print("Plugins 条目已删除")
+          
+          with open(menu_file, 'w', encoding='utf-8') as f:
+              json.dump(data, f, indent=8, ensure_ascii=False)
+          
+          print("菜单文件修改完成")
+          PYTHON_SCRIPT
+            
+            echo "✓ Plugins 菜单已成功移除"
+          else
+            echo "⚠ 未找到菜单文件，可能路径已变更"
+          fi
+
       - name: Custom Packages
         run: |
           cd ./wrt/package/
