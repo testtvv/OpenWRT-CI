@@ -186,3 +186,22 @@ CONFIG_SING_BOX_BUILD_V2RAY_API=n
 CONFIG_PACKAGE_luci-app-package-manager=n
 # CONFIG_PACKAGE_luci-app-package-manager is not set
 # CONFIG_PACKAGE_luci-i18n-package-manager-zh-cn is not set
+
+CONFIG_PACKAGE_kmod-usb-common=n
+CONFIG_PACKAGE_kmod-usb-core=n
+CONFIG_PACKAGE_kmod-usb-serial=n
+CONFIG_PACKAGE_kmod-usb-serial-qualcomm=n
+CONFIG_PACKAGE_kmod-usb-serial-wwan=n
+
+CONFIG_PACKAGE_kmod-bonding=n
+
+CONFIG_PACKAGE_kmod-gre=n
+CONFIG_PACKAGE_kmod-gre6=n
+
+CONFIG_PACKAGE_kmod-l2tp=n
+CONFIG_PACKAGE_kmod-pptp=n
+
+CONFIG_PACKAGE_kmod-vxlan=n
+
+CONFIG_PACKAGE_kmod-udptunnel4=n
+CONFIG_PACKAGE_kmod-udptunnel6=n
