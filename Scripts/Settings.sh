@@ -51,14 +51,6 @@ if [[ "${WRT_TARGET^^}" == *"QUALCOMMAX"* ]]; then
     echo "CONFIG_FEED_nss_packages=n" >> .config
     echo "CONFIG_FEED_sqm_scripts_nss=n" >> .config
     
-    # 设置NSS版本 (12.5)
-    echo "CONFIG_NSS_FIRMWARE_VERSION_11_4=n" >> .config
-    if [[ "${WRT_CONFIG,,}" == *"ipq50"* ]]; then
-        echo "CONFIG_NSS_FIRMWARE_VERSION_12_2=y" >> .config
-    else
-        echo "CONFIG_NSS_FIRMWARE_VERSION_12_5=y" >> .config
-    fi
-
     # --- 无WIFI配置 & 内存极致压榨开始 ---
     # 逻辑：如果配置名包含 "WIFI" 和 "NO"
     if [[ "${WRT_CONFIG,,}" == *"wifi"* && "${WRT_CONFIG,,}" == *"no"* ]]; then
